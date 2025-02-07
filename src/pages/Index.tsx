@@ -1,6 +1,5 @@
 
-import { HeroSection } from "@/components/HeroSection";
-import { ServicesSection } from "@/components/ServicesSection";
+import { RestaurantList } from "@/components/RestaurantList";
 import { useEffect } from "react";
 
 const Index = () => {
@@ -13,9 +12,8 @@ const Index = () => {
   }, []);
 
   return (
-    <main className="bg-white">
-      <HeroSection />
-      <ServicesSection />
+    <main className="bg-secondary min-h-screen">
+      <RestaurantList />
     </main>
   );
 };
