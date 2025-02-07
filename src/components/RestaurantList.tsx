@@ -188,7 +188,11 @@ const MOCK_RESTAURANTS = [
   },
 ];
 
-export const RestaurantList = () => {
+interface RestaurantListProps {
+  searchQuery: string;
+}
+
+export const RestaurantList = ({ searchQuery }: RestaurantListProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
     cuisine: "all",
@@ -199,8 +203,17 @@ export const RestaurantList = () => {
   const navigate = useNavigate();
   const itemsPerPage = 8;
 
-  // Filter restaurants based on selected filters
+  // Filter restaurants based on selected filters and search query
   const filteredRestaurants = MOCK_RESTAURANTS.filter((restaurant) => {
+    // Search filter
+    if (searchQuery) {
+      const searchLower = searchQuery.toLowerCase();
+      const nameMatch = restaurant.name.toLowerCase().includes(searchLower);
+      const cuisineMatch = restaurant.cuisine.toLowerCase().includes(searchLower);
+      if (!nameMatch && !cuisineMatch) return false;
+    }
+
+    // Other filters
     if (filters.cuisine !== "all" && restaurant.cuisine.toLowerCase() !== filters.cuisine) return false;
     if (filters.priceRange !== "all" && restaurant.priceRange !== filters.priceRange) return false;
     if (filters.rating !== "all" && restaurant.rating < parseInt(filters.rating)) return false;
@@ -213,49 +226,57 @@ export const RestaurantList = () => {
   const displayedRestaurants = filteredRestaurants.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto">
       <RestaurantFilters
         onCuisineChange={(value) => setFilters({ ...filters, cuisine: value })}
         onPriceRangeChange={(value) => setFilters({ ...filters, priceRange: value })}
         onRatingChange={(value) => setFilters({ ...filters, rating: value })}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-        {displayedRestaurants.map((restaurant) => (
-          <RestaurantCard
-            key={restaurant.id}
-            {...restaurant}
-            onClick={() => navigate(`/restaurant/${restaurant.id}`)}
-          />
-        ))}
-      </div>
+      {filteredRestaurants.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-lg text-muted-foreground">No restaurants found matching your criteria.</p>
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+            {displayedRestaurants.map((restaurant) => (
+              <RestaurantCard
+                key={restaurant.id}
+                {...restaurant}
+                onClick={() => navigate(`/restaurant/${restaurant.id}`)}
+              />
+            ))}
+          </div>
 
-      <Pagination className="mt-8">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious 
-              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-              className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-            />
-          </PaginationItem>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <PaginationItem key={page}>
-              <PaginationLink
-                onClick={() => setCurrentPage(page)}
-                isActive={currentPage === page}
-              >
-                {page}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-              className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+          <Pagination className="mt-8">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious 
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <PaginationItem key={page}>
+                  <PaginationLink
+                    onClick={() => setCurrentPage(page)}
+                    isActive={currentPage === page}
+                  >
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </>
+      )}
     </div>
   );
 };
