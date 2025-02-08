@@ -39,12 +39,12 @@ export const RestaurantFilters = ({
   };
 
   return (
-    <div className="flex flex-wrap gap-4 p-6 bg-white shadow-sm rounded-lg mb-8">
+    <div className="flex flex-wrap gap-4 p-6 bg-white shadow-sm rounded-lg mb-8 relative z-10">
       <Select onValueChange={onCuisineChange}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[180px] bg-white">
           <SelectValue placeholder="Cuisine" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-white z-50">
           <SelectItem value="all">All Cuisines</SelectItem>
           <SelectItem value="italian">Italian</SelectItem>
           <SelectItem value="indian">Indian</SelectItem>
@@ -54,10 +54,10 @@ export const RestaurantFilters = ({
       </Select>
 
       <Select onValueChange={onPriceRangeChange}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[180px] bg-white">
           <SelectValue placeholder="Price Range" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-white z-50">
           {getPriceRangeOptions(selectedCuisine).map((option) => (
             <SelectItem key={option.value} value={option.value}>
               {option.label}
@@ -67,10 +67,10 @@ export const RestaurantFilters = ({
       </Select>
 
       <Select onValueChange={onRatingChange}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[180px] bg-white">
           <SelectValue placeholder="Rating" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-white z-50">
           <SelectItem value="all">All Ratings</SelectItem>
           <SelectItem value="4">4+ Stars</SelectItem>
           <SelectItem value="3">3+ Stars</SelectItem>

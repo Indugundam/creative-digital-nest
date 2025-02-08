@@ -4,9 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, LogIn, UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const link = document.createElement("link");
@@ -21,10 +23,19 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <h2 className="text-xl font-bold text-primary">FoodFinder</h2>
           <div className="flex gap-4">
-            <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex items-center gap-2"
+              onClick={() => navigate('/signin')}
+            >
               <LogIn className="w-4 h-4" /> Sign In
             </Button>
-            <Button size="sm" className="flex items-center gap-2">
+            <Button 
+              size="sm" 
+              className="flex items-center gap-2"
+              onClick={() => navigate('/signup')}
+            >
               <UserPlus className="w-4 h-4" /> Sign Up
             </Button>
           </div>
