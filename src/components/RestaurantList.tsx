@@ -37,6 +37,7 @@ export const RestaurantList = ({ searchQuery }: RestaurantListProps) => {
           setFilters({ ...filters, priceRange: value })
         }
         onRatingChange={(value) => setFilters({ ...filters, rating: value })}
+        selectedCuisine={filters.cuisine}
       />
 
       {filteredRestaurants.length === 0 ? (
@@ -47,7 +48,7 @@ export const RestaurantList = ({ searchQuery }: RestaurantListProps) => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayedRestaurants.map((restaurant) => (
               <RestaurantCard
                 key={restaurant.id}

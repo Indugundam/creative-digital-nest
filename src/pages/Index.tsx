@@ -1,14 +1,14 @@
 
 import { RestaurantList } from "@/components/RestaurantList";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, LogIn, UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    // Add Inter font
     const link = document.createElement("link");
     link.href = "https://rsms.me/inter/inter.css";
     link.rel = "stylesheet";
@@ -17,6 +17,20 @@ const Index = () => {
 
   return (
     <main className="bg-secondary min-h-screen">
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+          <h2 className="text-xl font-bold text-primary">FoodFinder</h2>
+          <div className="flex gap-4">
+            <Button variant="outline" size="sm" className="flex items-center gap-2">
+              <LogIn className="w-4 h-4" /> Sign In
+            </Button>
+            <Button size="sm" className="flex items-center gap-2">
+              <UserPlus className="w-4 h-4" /> Sign Up
+            </Button>
+          </div>
+        </div>
+      </header>
+      
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary animate-fade-up">

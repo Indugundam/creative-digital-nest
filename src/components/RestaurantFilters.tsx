@@ -12,15 +12,34 @@ interface RestaurantFiltersProps {
   onCuisineChange: (value: string) => void;
   onPriceRangeChange: (value: string) => void;
   onRatingChange: (value: string) => void;
+  selectedCuisine: string;
 }
 
 export const RestaurantFilters = ({
   onCuisineChange,
   onPriceRangeChange,
   onRatingChange,
+  selectedCuisine,
 }: RestaurantFiltersProps) => {
+  const getPriceRangeOptions = (cuisine: string) => {
+    if (cuisine === "indian") {
+      return [
+        { value: "all", label: "All Prices" },
+        { value: "$", label: "Under ₹300" },
+        { value: "$$", label: "₹300-₹600" },
+        { value: "$$$", label: "₹600+" },
+      ];
+    }
+    return [
+      { value: "all", label: "All Prices" },
+      { value: "$", label: "Under $15" },
+      { value: "$$", label: "$15-$30" },
+      { value: "$$$", label: "$30+" },
+    ];
+  };
+
   return (
-    <div className="flex flex-wrap gap-4 p-4 bg-white shadow-sm rounded-lg">
+    <div className="flex flex-wrap gap-4 p-6 bg-white shadow-sm rounded-lg mb-8">
       <Select onValueChange={onCuisineChange}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Cuisine" />
@@ -39,10 +58,11 @@ export const RestaurantFilters = ({
           <SelectValue placeholder="Price Range" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All Prices</SelectItem>
-          <SelectItem value="$">$</SelectItem>
-          <SelectItem value="$$">$$</SelectItem>
-          <SelectItem value="$$$">$$$</SelectItem>
+          {getPriceRangeOptions(selectedCuisine).map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
 
